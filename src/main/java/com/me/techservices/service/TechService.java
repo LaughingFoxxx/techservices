@@ -9,4 +9,8 @@ public interface TechService {
     String getServiceList();
 
     String getServiceById(int id);
+
+    String bookService();
+
+    String cancelServiceBooking(int id);
 }
