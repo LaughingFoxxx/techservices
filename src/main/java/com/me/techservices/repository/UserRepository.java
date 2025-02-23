@@ -1,0 +1,7 @@
+package com.me.techservices.repository;
+
+import com.me.techservices.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+}

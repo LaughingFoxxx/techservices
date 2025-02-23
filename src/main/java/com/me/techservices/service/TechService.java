@@ -1,16 +1,31 @@
 package com.me.techservices.service;
 
+import com.me.techservices.dto.request.RequestBookingDTO;
+import com.me.techservices.dto.request.RequestServiceDTO;
+import com.me.techservices.dto.response.ResponseRevenueByDateDTO;
+import com.me.techservices.entity.Booking;
+import com.me.techservices.entity.Service;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
 public interface TechService {
 
-    String createService(String name);
+    Booking createBooking(RequestBookingDTO bookingDTO);
 
-    String updateService(int id);
+    Service createService(RequestServiceDTO serviceDTO);
 
-    String getServiceList();
+    Service updateService(int id, RequestServiceDTO serviceDTO);
 
-    String getServiceById(int id);
+    List<Service> getServiceList();
 
-    String bookService();
+    Service getServiceById(int id);
 
-    String cancelServiceBooking(int id);
+    Service cancelServiceBooking(int id);
+
+    Booking getBookingByDateTime(LocalDateTime bookingDateTime);
+
+    List<ResponseRevenueByDateDTO> getRevenueByDateTime(LocalDateTime startDate, LocalDateTime endDate);
 }
