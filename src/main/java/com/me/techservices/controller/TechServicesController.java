@@ -1,9 +1,11 @@
 package com.me.techservices.controller;
 
 import com.me.techservices.dto.request.RequestBookingDTO;
+import com.me.techservices.dto.request.RequestOperatorDTO;
 import com.me.techservices.dto.request.RequestServiceDTO;
 import com.me.techservices.dto.response.ResponseRevenueByDateDTO;
 import com.me.techservices.entity.Booking;
+import com.me.techservices.entity.Operator;
 import com.me.techservices.entity.Service;
 import com.me.techservices.service.TechService;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +40,7 @@ public class TechServicesController {
     }
 
     //редактирование услуги (ДЗ №3)
-    @PutMapping(value = "/update", produces = "application/json")
+    @PutMapping(value = "/update-service", produces = "application/json")
     ResponseEntity<Service> updateService(@RequestParam int id, @RequestBody RequestServiceDTO serviceDTO) {
         log.info("PUT request. Service: {}", id);
         return new ResponseEntity<>(techService.updateService(id, serviceDTO), HttpStatus.OK);
@@ -53,30 +55,67 @@ public class TechServicesController {
     }
 
     //получение услуги по идентификатору (ДЗ №3)
-    @GetMapping("/get-service")
+    @GetMapping(value = "/get-service", produces = "application/json")
     ResponseEntity<Service> getServiceById(@RequestParam int id) {
         log.info("GET request. Service: {}", id);
         return new ResponseEntity<>(techService.getServiceById(id), HttpStatus.OK);
     }
 
     //отмена брони услуги (ДЗ №4)
-    @DeleteMapping("/delete-service")
+    @DeleteMapping(value = "/delete-service", produces = "application/json")
     ResponseEntity<Service> cancelServiceBooking(@RequestParam int id) {
         log.info("DELETE request. Service: {}", id);
         return new ResponseEntity<>(techService.cancelServiceBooking(id), HttpStatus.OK);
     }
 
     //получение брони по дате и времени записи (ДЗ №8)
-    @GetMapping("/get-booking-by-datetime")
+    @GetMapping(value = "/get-booking-by-datetime", produces = "application/json")
     ResponseEntity<Booking> getBookingByDateTime(@RequestParam LocalDateTime dateTime) {
         log.info("GET request. Service: {}", dateTime);
-        return  new ResponseEntity<>(techService.getBookingByDateTime(dateTime), HttpStatus.OK);
+        return new ResponseEntity<>(techService.getBookingByDateTime(dateTime), HttpStatus.OK);
     }
 
     //получение выручки за определенный период времени (ДЗ №8)
-    @GetMapping("/get-revenue-by-datetime")
+    @GetMapping(value = "/get-revenue-by-datetime", produces = "application/json")
     ResponseEntity<List<ResponseRevenueByDateDTO>> getRevenueByDateTime(@RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate) {
-        log.info("GET request. Service: {}, {}", startDate, endDate);
+        log.info("GET request. Service: startDate={}, endDate={}", startDate, endDate);
         return new ResponseEntity<>(techService.getRevenueByDateTime(startDate, endDate), HttpStatus.OK);
+    }
+
+    //создание оператора (ДЗ №9)
+    @PostMapping(value = "/create-operator", produces = "application/json")
+    ResponseEntity<Operator> createOperator(@RequestBody RequestOperatorDTO requestOperatorDTO) {
+        log.info("POST request. Service: {}", requestOperatorDTO);
+        return new ResponseEntity<>(techService.createOperator(requestOperatorDTO), HttpStatus.OK);
+    }
+
+    //редактирование оператора (ДЗ №9)
+    @PutMapping(value = "/update-operator", produces = "application/json")
+    ResponseEntity<Operator> updateOperator(@RequestParam int id, @RequestBody RequestOperatorDTO operatorDTO) {
+        log.info("PUT request. Service: id={}, operatorDTO={}", id, operatorDTO);
+        return new ResponseEntity<>(techService.updateOperator(id, operatorDTO), HttpStatus.OK);
+    }
+
+    //редактирование брони пользователя (ДЗ №9)
+    @PutMapping(value = "/update-booking-of-user", produces = "application/json")
+    ResponseEntity<Booking> updateBookingOfUser(@RequestParam int userId,
+                                          @RequestParam int bookingId,
+                                          @RequestBody RequestBookingDTO bookingDTO) {
+        log.info("PUT request. Service: userId={}, bookingId={}, bookingDTO={}", userId, bookingId, bookingDTO);
+        return new ResponseEntity<>(techService.updateBookingOfUser((long) userId, (long) bookingId, bookingDTO), HttpStatus.OK);
+    }
+
+    //назначение скидки на все брони (ДЗ №9)
+    @PutMapping(value = "/update-all-discounts", produces = "application/json")
+    ResponseEntity<Long> updateDiscountsForAllBookings(@RequestParam String targetDiscount) {
+        log.info("PUT request. Service: targerDiscount={}", targetDiscount);
+        return new ResponseEntity<>(techService.updateAllBookingsDiscounts(targetDiscount), HttpStatus.OK);
+    }
+
+    //удаление скидки на все брони (ДЗ №9)
+    @DeleteMapping(value = "/delete-all-discounts", produces = "application/json")
+    ResponseEntity<Long> deleteDiscountsForAllBookings() {
+        log.info("DELETE request. Service: delete discounts for all bookings");
+        return new ResponseEntity<>(techService.deleteAllBookingsDiscounts(), HttpStatus.OK);
     }
 }

@@ -14,11 +14,11 @@ public class Booking {
     Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user", referencedColumnName = "user_id", nullable = false)
+    @JoinColumn(name = "user", referencedColumnName = "users_id", nullable = false)
     User user;
 
-    @ManyToOne
-    @JoinColumn(name = "service", referencedColumnName = "service_id", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "service", referencedColumnName = "services_id", nullable = false)
     Service service;
 
     @Column(name = "status")
@@ -26,4 +26,11 @@ public class Booking {
 
     @Column(name = "booked_time")
     LocalDateTime bookedTime;
+
+    @Column(name = "discount")
+    String discount;
+
+    @OneToOne
+    @JoinColumn(name = "operator", referencedColumnName = "operators_id")
+    Operator operator;
 }
