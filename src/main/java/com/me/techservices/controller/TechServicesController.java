@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -26,6 +27,7 @@ public class TechServicesController {
     private final TechService techService;
 
     //Создание брони на услугу сервиса (ДЗ №3)
+    @Secured("ROLE_USER")
     @PostMapping(value = "/create-booking", produces = "application/json")
     ResponseEntity<Booking> bookService(@RequestBody RequestBookingDTO createBookingDTO) {
         log.info("POST request. Service: {}", createBookingDTO);
@@ -33,6 +35,7 @@ public class TechServicesController {
     }
 
     //создание услуги (ДЗ №3)
+    @Secured("ROLE_USER")
     @PostMapping(value = "/create-service", produces = "application/json")
     ResponseEntity<Service> createService(@RequestBody RequestServiceDTO serviceDTO) {
         log.info("POST request. Service: {}", serviceDTO);
@@ -40,6 +43,7 @@ public class TechServicesController {
     }
 
     //редактирование услуги (ДЗ №3)
+    @Secured("ROLE_USER")
     @PutMapping(value = "/update-service", produces = "application/json")
     ResponseEntity<Service> updateService(@RequestParam int id, @RequestBody RequestServiceDTO serviceDTO) {
         log.info("PUT request. Service: {}", id);
@@ -47,6 +51,7 @@ public class TechServicesController {
     }
 
     //получение списка услуг (ДЗ №3)
+    @Secured("ROLE_USER")
     @GetMapping(value = "/get-services-list", produces = "application/json")
     ResponseEntity<List<Service>> getServiceList() {
         List<Service> result = techService.getServiceList();
@@ -55,6 +60,7 @@ public class TechServicesController {
     }
 
     //получение услуги по идентификатору (ДЗ №3)
+    @Secured("ROLE_USER")
     @GetMapping(value = "/get-service", produces = "application/json")
     ResponseEntity<Service> getServiceById(@RequestParam int id) {
         log.info("GET request. Service: {}", id);
@@ -62,6 +68,7 @@ public class TechServicesController {
     }
 
     //отмена брони услуги (ДЗ №4)
+    @Secured("ROLE_USER")
     @DeleteMapping(value = "/delete-service", produces = "application/json")
     ResponseEntity<Service> cancelServiceBooking(@RequestParam int id) {
         log.info("DELETE request. Service: {}", id);
@@ -69,6 +76,7 @@ public class TechServicesController {
     }
 
     //получение брони по дате и времени записи (ДЗ №8)
+    @Secured("ROLE_USER")
     @GetMapping(value = "/get-booking-by-datetime", produces = "application/json")
     ResponseEntity<Booking> getBookingByDateTime(@RequestParam LocalDateTime dateTime) {
         log.info("GET request. Service: {}", dateTime);
@@ -76,6 +84,7 @@ public class TechServicesController {
     }
 
     //получение выручки за определенный период времени (ДЗ №8)
+    @Secured("ROLE_USER")
     @GetMapping(value = "/get-revenue-by-datetime", produces = "application/json")
     ResponseEntity<List<ResponseRevenueByDateDTO>> getRevenueByDateTime(@RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate) {
         log.info("GET request. Service: startDate={}, endDate={}", startDate, endDate);
@@ -83,6 +92,7 @@ public class TechServicesController {
     }
 
     //создание оператора (ДЗ №9)
+    @Secured("ROLE_USER")
     @PostMapping(value = "/create-operator", produces = "application/json")
     ResponseEntity<Operator> createOperator(@RequestBody RequestOperatorDTO requestOperatorDTO) {
         log.info("POST request. Service: {}", requestOperatorDTO);
@@ -90,6 +100,7 @@ public class TechServicesController {
     }
 
     //редактирование оператора (ДЗ №9)
+    @Secured("ROLE_USER")
     @PutMapping(value = "/update-operator", produces = "application/json")
     ResponseEntity<Operator> updateOperator(@RequestParam int id, @RequestBody RequestOperatorDTO operatorDTO) {
         log.info("PUT request. Service: id={}, operatorDTO={}", id, operatorDTO);
@@ -97,6 +108,7 @@ public class TechServicesController {
     }
 
     //редактирование брони пользователя (ДЗ №9)
+    @Secured("ROLE_USER")
     @PutMapping(value = "/update-booking-of-user", produces = "application/json")
     ResponseEntity<Booking> updateBookingOfUser(@RequestParam int userId,
                                           @RequestParam int bookingId,
@@ -106,6 +118,7 @@ public class TechServicesController {
     }
 
     //назначение скидки на все брони (ДЗ №9)
+    @Secured("ROLE_USER")
     @PutMapping(value = "/update-all-discounts", produces = "application/json")
     ResponseEntity<Long> updateDiscountsForAllBookings(@RequestParam String targetDiscount) {
         log.info("PUT request. Service: targerDiscount={}", targetDiscount);
@@ -113,6 +126,7 @@ public class TechServicesController {
     }
 
     //удаление скидки на все брони (ДЗ №9)
+    @Secured("ROLE_USER")
     @DeleteMapping(value = "/delete-all-discounts", produces = "application/json")
     ResponseEntity<Long> deleteDiscountsForAllBookings() {
         log.info("DELETE request. Service: delete discounts for all bookings");

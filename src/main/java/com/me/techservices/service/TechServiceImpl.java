@@ -7,12 +7,11 @@ import com.me.techservices.dto.response.ResponseRevenueByDateDTO;
 import com.me.techservices.entity.Booking;
 import com.me.techservices.entity.Operator;
 import com.me.techservices.entity.Service;
-import com.me.techservices.entity.User;
 import com.me.techservices.exception.ServiceException;
+import com.me.techservices.mapper.MapperDTOToEntity;
 import com.me.techservices.repository.BookingRepository;
 import com.me.techservices.repository.OperatorRepository;
 import com.me.techservices.repository.ServiceRepository;
-import com.me.techservices.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,42 +25,18 @@ import java.util.List;
 public class TechServiceImpl implements TechService {
     private final BookingRepository bookingRepository;
     private final ServiceRepository serviceRepository;
-    private final UserRepository userRepository;
     private final OperatorRepository operatorRepository;
+    private final MapperDTOToEntity dtoMapper;
 
 
     @Override
     public Booking createBooking(RequestBookingDTO bookingDTO) {
-        User user = new User();
-        user.setName(bookingDTO.userDTO().name());
-        user.setLastName(bookingDTO.userDTO().lastName());
-        user.setPhoneNumber(bookingDTO.userDTO().phoneNumber());
-        user.setEmail(bookingDTO.userDTO().email());
-
-        Service service = new Service();
-        service.setName(bookingDTO.serviceDTO().name());
-        service.setName(bookingDTO.serviceDTO().description());
-        service.setName(bookingDTO.serviceDTO().price());
-
-        Booking booking = new Booking();
-        booking.setUser(user);
-        booking.setService(service);
-        booking.setStatus(bookingDTO.status());
-        booking.setBookedTime(LocalDateTime.parse(bookingDTO.bookedTime()));
-
-        bookingRepository.save(booking);
-
-        return booking;
+        return bookingRepository.save(dtoMapper.mapRequestBookingDTOToBookingEntity(bookingDTO));
     }
 
     @Override
     public Service createService(RequestServiceDTO serviceDTO) {
-        Service service = new Service();
-        service.setName(serviceDTO.name());
-        service.setDescription(serviceDTO.description());
-        service.setPrice(BigDecimal.valueOf(Long.parseLong(serviceDTO.price())));
-
-        return service;
+        return dtoMapper.mapRequestServiceDTOToServiceEntity(serviceDTO);
     }
 
     @Override
@@ -112,11 +87,7 @@ public class TechServiceImpl implements TechService {
 
     @Override
     public Operator createOperator(RequestOperatorDTO operatorDTO) {
-        Operator operator = new Operator();
-        operator.setName(operatorDTO.name());
-        operator.setLastName(operatorDTO.lastName());
-
-        operatorRepository.save(operator);
+        operatorRepository.save(dtoMapper.mapRequestOperatorDTOToOperatorEntity(operatorDTO));
         return operatorRepository.findOperatorByLastName(operatorDTO.lastName());
     }
 
@@ -157,7 +128,7 @@ public class TechServiceImpl implements TechService {
     public Long updateAllBookingsDiscounts(String targetDiscount) {
         List<Booking> list = getAllBookingsList();
 
-        Long affectedBookingsCount = 0L;
+        long affectedBookingsCount = 0L;
         for (Booking booking : list) {
             booking.setDiscount(targetDiscount);
             affectedBookingsCount += 1;
@@ -170,7 +141,7 @@ public class TechServiceImpl implements TechService {
     public Long deleteAllBookingsDiscounts() {
         List<Booking> list = getAllBookingsList();
 
-        Long affectedBookingsCount = 0L;
+        long affectedBookingsCount = 0L;
         for (Booking booking : list) {
             booking.setDiscount("0%");
             affectedBookingsCount += 1;
