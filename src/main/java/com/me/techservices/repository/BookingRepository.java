@@ -25,4 +25,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     Optional<Booking> findByIdAndUserId(Long userId, Long bookingId);
 
     void deleteAllByUserId(Long userId);
+
+    List<Booking> findByStatus(String provided);
 }

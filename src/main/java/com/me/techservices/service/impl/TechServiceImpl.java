@@ -1,4 +1,4 @@
-package com.me.techservices.service;
+package com.me.techservices.service.impl;
 
 import com.me.techservices.dto.request.RequestBookingDTO;
 import com.me.techservices.dto.request.RequestOperatorDTO;
@@ -14,7 +14,7 @@ import com.me.techservices.repository.BookingRepository;
 import com.me.techservices.repository.OperatorRepository;
 import com.me.techservices.repository.ServiceRepository;
 import com.me.techservices.repository.UserRepository;
-import jakarta.transaction.Transactional;
+import com.me.techservices.service.TechService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @org.springframework.stereotype.Service
