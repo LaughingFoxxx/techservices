@@ -1,7 +1,6 @@
 package com.me.techservices.service.security_service;
 
 import com.nimbusds.jose.*;
-import com.nimbusds.jose.crypto.DirectDecrypter;
 import com.nimbusds.jose.crypto.DirectEncrypter;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;

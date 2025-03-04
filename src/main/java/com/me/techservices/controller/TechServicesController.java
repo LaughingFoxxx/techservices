@@ -72,7 +72,8 @@ public class TechServicesController {
     @DeleteMapping(value = "/delete-service", produces = "application/json")
     ResponseEntity<Service> cancelServiceBooking(@RequestParam int id) {
         log.info("DELETE request. Service: {}", id);
-        return new ResponseEntity<>(techService.cancelServiceBooking(id), HttpStatus.OK);
+        techService.cancelServiceBooking(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     //получение брони по дате и времени записи (ДЗ №8)
@@ -131,5 +132,12 @@ public class TechServicesController {
     ResponseEntity<Long> deleteDiscountsForAllBookings() {
         log.info("DELETE request. Service: delete discounts for all bookings");
         return new ResponseEntity<>(techService.deleteAllBookingsDiscounts(), HttpStatus.OK);
+    }
+
+    @Secured("ROLE_ADMIN")
+    @PostMapping(value = "/give-discount-to-all-cancelled-users")
+    ResponseEntity<?> giveDiscountToAllCancelledUsers(String message) {
+        log.info("POST request. Service: {}", message);
+        return new ResponseEntity<>(techService.giveDiscountToAllCancelledUsers(message), HttpStatus.OK);
     }
 }

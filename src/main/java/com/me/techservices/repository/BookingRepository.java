@@ -23,4 +23,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<ResponseRevenueByDateDTO> findRevenueByDate(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
     Optional<Booking> findByIdAndUserId(Long userId, Long bookingId);
+
+    void deleteAllByUserId(Long userId);
 }

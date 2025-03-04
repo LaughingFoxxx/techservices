@@ -7,11 +7,10 @@ import com.me.techservices.dto.response.ResponseRevenueByDateDTO;
 import com.me.techservices.entity.Booking;
 import com.me.techservices.entity.Operator;
 import com.me.techservices.entity.Service;
+import com.me.techservices.entity.User;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 public interface TechService {
 
@@ -25,7 +24,7 @@ public interface TechService {
 
     Service getServiceById(int id);
 
-    Service cancelServiceBooking(int id);
+    void cancelServiceBooking(long id);
 
     Booking getBookingByDateTime(LocalDateTime bookingDateTime);
 
@@ -44,4 +43,6 @@ public interface TechService {
     Long updateAllBookingsDiscounts(String targetDiscount);
 
     Long deleteAllBookingsDiscounts();
+
+    List<User> giveDiscountToAllCancelledUsers(String message);
 }
